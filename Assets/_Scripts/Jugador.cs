@@ -16,24 +16,18 @@ public class Jugador : MonoBehaviour
         transform = this.gameObject.transform;
     }
 
+    [System.Obsolete]
+    public virtual void OnCollisionEnter(Collision collision)
+    {
+        Vector3 direccion = collision.contacts[0].point - transform.position;
+        direccion = -direccion.normalized;
+        collision.rigidbody.velocity = collision.gameObject.GetComponent<Bola>().velocidadBola * direccion;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        //mousePos2D = Input.mousePosition;
-       // mousePos2D.z = -Camera.main.transform.position.z;
-       // mousePos3D = Camera.main.ScreenToWorldPoint(mousePos2D);
-
-        
-       // if(Input.GetKey(KeyCode.RightArrow))
-       // {
-       //     transform.Translate(Vector3.down * velocidadPaddle * Time.deltaTime);
-       // }
-//
-       // if(Input.GetKey(KeyCode.LeftArrow))
-       // {
-       //     transform.Translate(Vector3.up * velocidadPaddle * Time.deltaTime);
-       // }
-        
+    
         transform.Translate(Input.GetAxis("Horizontal") * Vector3.down * velocidadPaddle * Time.deltaTime);
 
         Vector3 pos = transform.position;

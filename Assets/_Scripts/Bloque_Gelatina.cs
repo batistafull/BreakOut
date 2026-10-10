@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Bloque_Gelatina : Bloque
@@ -8,9 +10,10 @@ public class Bloque_Gelatina : Bloque
         resitencia = 2;
     }
 
-    public override void RebotarBola()
+    [System.Obsolete]
+    public override void RebotarBola(Collision collision)
     {
-        base.RebotarBola();
+        base.RebotarBola(collision);
     }
     
 }

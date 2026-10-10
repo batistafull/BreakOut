@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Bloque_Acero : Bloque
@@ -7,9 +9,10 @@ public class Bloque_Acero : Bloque
     {
         resitencia = 10;
     }
-    
-    public override void RebotarBola()
+
+    [System.Obsolete]
+    public override void RebotarBola(Collision collision)
     {
-        base.RebotarBola();
+        base.RebotarBola(collision);
     }
 }
