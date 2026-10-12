@@ -10,7 +10,6 @@ public class Bloque_Piedra : Bloque
         resitencia = 5;
     }
 
-    [System.Obsolete]
     public override void RebotarBola(Collision collision)
     {
         base.RebotarBola(collision);

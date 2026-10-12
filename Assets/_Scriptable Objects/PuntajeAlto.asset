@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PuntajeAlto
   m_EditorClassIdentifier: Assembly-CSharp::PuntajeAlto
   puntaje: 0
-  puntajeAlto: 1000
+  puntajeAlto: 0

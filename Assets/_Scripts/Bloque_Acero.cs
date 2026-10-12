@@ -10,7 +10,6 @@ public class Bloque_Acero : Bloque
         resitencia = 10;
     }
 
-    [System.Obsolete]
     public override void RebotarBola(Collision collision)
     {
         base.RebotarBola(collision);

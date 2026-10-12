@@ -1,44 +1,24 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Jugador : MonoBehaviour
 {
-    [SerializeField] public int limiteX = 23;
-    [SerializeField] public float velocidadPaddle = 0.9f;
+    public int limiteX = 23;
+    public float velocidadPaddle = 0.9f;
 
-    Transform transform;
-
-    Vector3 mousePos2D;
-    Vector3 mousePos3D;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void OnCollisionEnter(Collision collision)
     {
-        transform = this.gameObject.transform;
-    }
-
-    [System.Obsolete]
-    public virtual void OnCollisionEnter(Collision collision)
-    {
+        if (!collision.gameObject.CompareTag("Bola")) return;
         Vector3 direccion = collision.contacts[0].point - transform.position;
-        direccion = -direccion.normalized;
-        collision.rigidbody.velocity = collision.gameObject.GetComponent<Bola>().velocidadBola * direccion;
+        direccion.y = Mathf.Max(Mathf.Abs(direccion.y), 1f);
+        direccion.z = 0;
+        collision.rigidbody.linearVelocity = collision.gameObject.GetComponent<Bola>().velocidadBola * direccion.normalized;
     }
 
-    // Update is called once per frame
     void Update()
     {
-    
-        transform.Translate(Input.GetAxis("Horizontal") * Vector3.down * velocidadPaddle * Time.deltaTime);
-
         Vector3 pos = transform.position;
-        //pos.x = mousePos3D.x;
-        if (pos.x < -limiteX)
-        {
-            pos.x = -limiteX;
-        }else if (pos.x > limiteX)
-        {
-            pos.x = limiteX;
-        }
+        pos.x += Input.GetAxis("Horizontal") * velocidadPaddle * Time.deltaTime;
+        pos.x = Mathf.Clamp(pos.x, -limiteX, limiteX);
         transform.position = pos;
     }
 }

@@ -10,7 +10,6 @@ public class Bloque_Gelatina : Bloque
         resitencia = 2;
     }
 
-    [System.Obsolete]
     public override void RebotarBola(Collision collision)
     {
         base.RebotarBola(collision);

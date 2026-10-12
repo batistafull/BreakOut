@@ -1,94 +1,77 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Bola : MonoBehaviour
 {
-
     bool isGameStarted;
-    [SerializeField] public float velocidadBola = 10.0f;
-    Vector3 ultimaPosicion = Vector3.zero;
-    Vector3 direccion = Vector3.zero;
-    Rigidbody rigidbody;
+    public Opciones opciones;
+    public float velocidadBola = 30;
+    Vector3 direccion = Vector3.up;
+    Rigidbody cuerpo;
     private ControlBordes control;
     public UnityEvent BolaDestruida;
 
     private void Awake()
     {
         control = GetComponent<ControlBordes>();
+        cuerpo = GetComponent<Rigidbody>();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         isGameStarted = false;
-        Vector3 posicionInicial = GameObject.FindGameObjectWithTag("Jugador").transform.position;
+        Transform jugador = GameObject.FindGameObjectWithTag("Jugador").transform;
+        Vector3 posicionInicial = jugador.position;
         posicionInicial.y += 3;
-        this.transform.position = posicionInicial;
-        this.transform.SetParent(GameObject.FindGameObjectWithTag("Jugador").transform);
-        rigidbody = this.gameObject.GetComponent<Rigidbody>();
+        transform.position = posicionInicial;
+        transform.SetParent(jugador);
+        cuerpo.linearVelocity = Vector3.zero;
     }
 
-    // Update is called once per frame
-    [System.Obsolete]
     void Update()
     {
-        if(control.salioAbajo)
+        if (opciones != null) velocidadBola = opciones.ObtenerVelocidadBola();
+        if (Time.timeScale == 0) return;
+
+        if (control.salioAbajo)
         {
             BolaDestruida.Invoke();
-            Destroy(this.gameObject);
+            Destroy(gameObject);
+            return;
         }
 
-        if(control.salioArriba)
-        {
-            direccion = transform.position - ultimaPosicion;
-            Debug.Log("La bola toco el borde superior");
-            direccion.y *= -1;
-            direccion = direccion.normalized;
-            rigidbody.velocity = velocidadBola * direccion;
-            control.salioArriba = false;
-        }
+        Vector3 movimiento = cuerpo.linearVelocity;
+        if (control.salioArriba) movimiento.y = -Mathf.Abs(movimiento.y);
+        if (control.salioIzquierda) movimiento.x = Mathf.Abs(movimiento.x);
+        if (control.salioDerecha) movimiento.x = -Mathf.Abs(movimiento.x);
+        if (isGameStarted) cuerpo.linearVelocity = movimiento.normalized * velocidadBola;
 
-        if(control.salioIzquierda)
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Submit"))
         {
-            direccion = transform.position - ultimaPosicion;
-            Debug.Log("La bola toco el borde izquierdo");
-            direccion.x *= -1;
-            direccion = direccion.normalized;
-            rigidbody.velocity = velocidadBola * direccion;
-            control.salioIzquierda = false;
-        }
-
-        if(control.salioDerecha)
-        {
-            direccion = transform.position - ultimaPosicion;
-            Debug.Log("La bola toco el borde derecho");
-            direccion.x *= -1;
-            direccion = direccion.normalized;
-            rigidbody.velocity = velocidadBola * direccion;
-            control.salioDerecha = false;
-        }
-
-
-        if(Input.GetKeyDown(KeyCode.Space) || Input.GetButton("Submit"))
-        {
-            if(!isGameStarted)
+            if (!isGameStarted)
             {
                 isGameStarted = true;
-                this.transform.SetParent(null);
-                GetComponent<Rigidbody>().linearVelocity = velocidadBola * Vector3.up;
+                transform.SetParent(null);
+                direccion = new Vector3(0.25f, 1, 0).normalized;
+                cuerpo.linearVelocity = velocidadBola * direccion;
             }
         }
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        if(direccion != Vector3.zero) direccion = Vector3.zero;
+        // Guardamos la direccion antes de que la fisica resuelva el choque.
+        if (cuerpo.linearVelocity != Vector3.zero)
+            direccion = cuerpo.linearVelocity.normalized;
     }
 
-    private void LateUpdate()
+    public void Rebotar(Vector3 normal)
     {
-        if(direccion != Vector3.zero) direccion = Vector3.zero;
+        direccion = Vector3.Reflect(direccion, normal);
+        direccion.z = 0;
+        // Evita que la bola quede rebotando completamente horizontal.
+        if (Mathf.Abs(direccion.y) < 0.2f)
+            direccion.y = direccion.y < 0 ? -0.2f : 0.2f;
+        cuerpo.linearVelocity = direccion.normalized * velocidadBola;
     }
 }

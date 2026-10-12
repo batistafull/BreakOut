@@ -4,7 +4,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-public abstract class PuntajePersitente : ScriptableObject
+public abstract class ObjetoPersistente : ScriptableObject
 {
     
     public void Guardar(string nombreArchivo = null)
@@ -29,7 +29,7 @@ public abstract class PuntajePersitente : ScriptableObject
 
     public string ObtenerRuta(string nombreArchivo = null)
     {
-        var nombreArchivoCompleto = string.IsNullOrEmpty(nombreArchivo) ? name : nombreArchivo + nombreArchivo;
+        var nombreArchivoCompleto = string.IsNullOrEmpty(nombreArchivo) ? name : nombreArchivo;
         return string.Format("{0}/{1}.dat", Application.persistentDataPath, nombreArchivoCompleto);
     }
 }

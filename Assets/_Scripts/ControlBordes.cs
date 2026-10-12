@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ControlBordes : MonoBehaviour
@@ -14,42 +12,37 @@ public class ControlBordes : MonoBehaviour
     public float altoCamara;
     public bool salioDerecha, salioIzquierda, salioArriba, salioAbajo;
 
-    
-    void Awake()
+    void LateUpdate()
     {
         altoCamara = Camera.main.orthographicSize;
         anchoCamara = Camera.main.aspect * altoCamara;
-    }
-
-    // Update is called once per frame
-    void LateUpdate()
-    {
+        Vector3 centro = Camera.main.transform.position;
         Vector3 pos = transform.position;
-        estaEnPantalla = true;
         salioAbajo = salioArriba = salioIzquierda = salioDerecha = false;
 
-        if (pos.x > anchoCamara - radio)
+        if (pos.x > centro.x + anchoCamara - radio)
         {
-            pos.x = anchoCamara - radio;
+            pos.x = centro.x + anchoCamara - radio;
             salioDerecha = true;
         }
-        if (pos.x < -anchoCamara + radio)
+        if (pos.x < centro.x - anchoCamara + radio)
         {
-            pos.x = -anchoCamara + radio;
+            pos.x = centro.x - anchoCamara + radio;
             salioIzquierda = true;
         }
-        if (pos.y > altoCamara - radio)
+        if (pos.y > centro.y + altoCamara - radio)
         {
-            pos.y = altoCamara - radio;
+            pos.y = centro.y + altoCamara - radio;
             salioArriba = true;
         }
-        if (pos.y < -altoCamara + radio)
+        if (pos.y < centro.y - altoCamara + radio)
         {
-            pos.y = -altoCamara + radio;
+            pos.y = centro.y - altoCamara + radio;
+            salioAbajo = true;
         }
 
         estaEnPantalla = !(salioDerecha || salioIzquierda || salioArriba || salioAbajo);
-        if(mantenerEnPantalla && !estaEnPantalla)
+        if (mantenerEnPantalla && !estaEnPantalla)
         {
             transform.position = pos;
             estaEnPantalla = true;
@@ -59,7 +52,8 @@ public class ControlBordes : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (!Application.isPlaying) return;
-        Vector3 tamanoBorde = new Vector3(anchoCamara * 2, altoCamara * 2, 0);
-        Gizmos.DrawWireCube(Vector3.zero, tamanoBorde);
+        Vector3 centro = Camera.main.transform.position;
+        centro.z = 0;
+        Gizmos.DrawWireCube(centro, new Vector3(anchoCamara * 2, altoCamara * 2, 0));
     }
 }

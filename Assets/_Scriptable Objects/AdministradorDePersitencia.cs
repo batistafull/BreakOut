@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AdministradorDePersitencia : MonoBehaviour
 {
-    public List<PuntajePersitente> objetosAGuardar;
+    public List<ObjetoPersistente> objetosAGuardar;
 
     public void OnEnable()
     {
