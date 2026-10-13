@@ -1,50 +1,24 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Jugador : MonoBehaviour
 {
-    [SerializeField] public int limiteX = 23;
-    [SerializeField] public float velocidadPaddle = 0.9f;
+    public int limiteX = 23;
+    public float velocidadPaddle = 0.9f;
 
-    Transform transform;
-
-    Vector3 mousePos2D;
-    Vector3 mousePos3D;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void OnCollisionEnter(Collision collision)
     {
-        transform = this.gameObject.transform;
+        if (!collision.gameObject.CompareTag("Bola")) return;
+        Vector3 direccion = collision.contacts[0].point - transform.position;
+        direccion.y = Mathf.Max(Mathf.Abs(direccion.y), 1f);
+        direccion.z = 0;
+        collision.rigidbody.linearVelocity = collision.gameObject.GetComponent<Bola>().velocidadBola * direccion.normalized;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //mousePos2D = Input.mousePosition;
-       // mousePos2D.z = -Camera.main.transform.position.z;
-       // mousePos3D = Camera.main.ScreenToWorldPoint(mousePos2D);
-
-        
-       // if(Input.GetKey(KeyCode.RightArrow))
-       // {
-       //     transform.Translate(Vector3.down * velocidadPaddle * Time.deltaTime);
-       // }
-//
-       // if(Input.GetKey(KeyCode.LeftArrow))
-       // {
-       //     transform.Translate(Vector3.up * velocidadPaddle * Time.deltaTime);
-       // }
-        
-        transform.Translate(Input.GetAxis("Horizontal") * Vector3.down * velocidadPaddle * Time.deltaTime);
-
         Vector3 pos = transform.position;
-        //pos.x = mousePos3D.x;
-        if (pos.x < -limiteX)
-        {
-            pos.x = -limiteX;
-        }else if (pos.x > limiteX)
-        {
-            pos.x = limiteX;
-        }
+        pos.x += Input.GetAxis("Horizontal") * velocidadPaddle * Time.deltaTime;
+        pos.x = Mathf.Clamp(pos.x, -limiteX, limiteX);
         transform.position = pos;
     }
 }
