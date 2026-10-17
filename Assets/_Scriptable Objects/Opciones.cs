@@ -31,4 +31,10 @@ public class Opciones : ObjetoPersistente
         if (NivelDificultad == dificultad.dificil) return velocidad * 1.5f;
         return velocidad;
     }
+    public int ObtenerResistenciaBloque(int resistenciaBase)
+    {
+        if (NivelDificultad == dificultad.normal) return resistenciaBase + 1;
+        if (NivelDificultad == dificultad.dificil) return resistenciaBase + 3;
+        return resistenciaBase;
+    }
 }

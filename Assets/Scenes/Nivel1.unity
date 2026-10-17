@@ -1102,7 +1102,7 @@ MonoBehaviour:
   transformPuntajeActual: {fileID: 0}
   textoPuntajeAlto: {fileID: 0}
   textoPuntajeActual: {fileID: 0}
-  puntajeAltoSO: {fileID: 11400000, guid: 772b586a7bb058245b27a34849982c56, type: 2}
+  puntajeAltoSO: {fileID: 11400000, guid: c2129af29ac84f28abe196f013ae51d1, type: 2}
 --- !u!114 &330585551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6322,7 +6322,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AdministradorDePersitencia
   objetosAGuardar:
-  - {fileID: 11400000, guid: 772b586a7bb058245b27a34849982c56, type: 2}
+  - {fileID: 11400000, guid: c2129af29ac84f28abe196f013ae51d1, type: 2}
 --- !u!4 &2124660833
 Transform:
   m_ObjectHideFlags: 0

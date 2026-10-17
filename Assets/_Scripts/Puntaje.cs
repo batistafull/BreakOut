@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -9,9 +7,9 @@ public class Puntaje : MonoBehaviour
     public Transform transformPuntajeActual;
     public TMP_Text textoPuntajeAlto;
     public TMP_Text textoPuntajeActual;
+    // Asignar PuntajeNivel1, PuntajeNivel2 o PuntajeNivel3 en cada escena.
     public PuntajeAlto puntajeAltoSO;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         transformPuntajeActual = GameObject.Find("PuntajeActual").transform;
@@ -19,39 +17,25 @@ public class Puntaje : MonoBehaviour
         textoPuntajeActual = transformPuntajeActual.GetComponent<TMP_Text>();
         textoPuntajeAlto = transformPuntajeAlto.GetComponent<TMP_Text>();
 
-        //if (PlayerPrefs.HasKey("PuntajeAlto"))
-        //{
-            //puntajeAlto = PlayerPrefs.GetInt("PuntajeAlto");
-            
-        //}
         puntajeAltoSO.Cargar();
-        textoPuntajeAlto.text = $"Puntaje Alto: {puntajeAltoSO.puntajeAlto}";
         puntajeAltoSO.puntaje = 0;
-        
-    }
-
-    public void FixedUpdate()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        textoPuntajeActual.text = $"Puntaje: {puntajeAltoSO.puntaje}";
-        if (puntajeAltoSO.puntaje > puntajeAltoSO.puntajeAlto)
-        {
-            puntajeAltoSO.puntajeAlto = puntajeAltoSO.puntaje;
-            textoPuntajeAlto.text = $"Puntaje Alto: {puntajeAltoSO.puntajeAlto}";
-            puntajeAltoSO.Guardar();
-            //PlayerPrefs.SetInt("PuntajeAlto", puntajeAltoSO.puntaje);
-        }
-        
+        ActualizarTextos();
     }
 
     public void AumentarPuntaje(int puntos)
     {
         puntajeAltoSO.puntaje += puntos;
+        if (puntajeAltoSO.puntaje > puntajeAltoSO.puntajeAlto)
+        {
+            puntajeAltoSO.puntajeAlto = puntajeAltoSO.puntaje;
+            puntajeAltoSO.Guardar();
+        }
+        ActualizarTextos();
     }
 
+    void ActualizarTextos()
+    {
+        textoPuntajeActual.text = $"Puntaje: {puntajeAltoSO.puntaje}";
+        textoPuntajeAlto.text = $"Puntaje Alto: {puntajeAltoSO.puntajeAlto}";
+    }
 }
