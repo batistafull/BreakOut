@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bloque_Madera
   resitencia: 1
+  opciones: {fileID: 11400000, guid: 64a344fdb65ae5440ab772f83e6ff41b, type: 2}
   AumentarPuntaje:
     m_PersistentCalls:
       m_Calls:

@@ -4,7 +4,15 @@ using UnityEngine.Events;
 public class Bloque : MonoBehaviour
 {
     public int resitencia = 1;
+    public Opciones opciones;
     public UnityEvent AumentarPuntaje;
+
+    protected virtual void Start()
+    {
+        // Se aplica una sola vez al crear el bloque, sin recuperar golpes recibidos.
+        if (opciones != null)
+            resitencia = opciones.ObtenerResistenciaBloque(resitencia);
+    }
 
     public void OnCollisionEnter(Collision collision)
     {

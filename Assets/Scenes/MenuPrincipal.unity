@@ -3693,7 +3693,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AdministradorDePersitencia
   objetosAGuardar:
-  - {fileID: 11400000, guid: 772b586a7bb058245b27a34849982c56, type: 2}
   - {fileID: 11400000, guid: 64a344fdb65ae5440ab772f83e6ff41b, type: 2}
 --- !u!4 &2124660833
 Transform:

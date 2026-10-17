@@ -5,9 +5,10 @@ using UnityEngine;
 public class Bloque_Gelatina : Bloque
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected override void Start()
     {
-        resitencia = 2;
+        resitencia = 4;
+        base.Start();
     }
 
     public override void RebotarBola(Collision collision)
